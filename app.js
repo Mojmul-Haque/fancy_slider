@@ -16,6 +16,11 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+
+
+    const spinerContainer = document.querySelector('#spiner')
+    spinerContainer.classList.remove('d-block')
+
     imagesArea.style.display = 'block';
     gallery.innerHTML = '';
     // show gallery title
@@ -122,6 +127,14 @@ const changeSlide = (index) => {
 }
 
 searchBtn.addEventListener('click', function() {
+
+    // spiner
+
+
+    const spinerContainer = document.querySelector('#spiner')
+    spinerContainer.classList.toggle('d-block')
+
+
     document.querySelector('.main').style.display = 'none';
     clearInterval(timer);
     getImages(search.value)
