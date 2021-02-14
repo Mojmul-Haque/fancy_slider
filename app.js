@@ -17,10 +17,6 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 // show images 
 const showImages = (images) => {
 
-
-    const spinerContainer = document.querySelector('#spiner')
-    spinerContainer.classList.remove('d-block')
-
     imagesArea.style.display = 'block';
     gallery.innerHTML = '';
     // show gallery title
@@ -32,10 +28,13 @@ const showImages = (images) => {
         gallery.appendChild(div)
     })
 
+    // show spiner
+    showSpiner(false)
+
 }
 
 const getImages = (query) => {
-    fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
+    fetch(`https://apixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
         .then(response => response.json())
         .then(data => showImages(data.hits))
         .catch(err => erorMessage(err))
@@ -71,9 +70,7 @@ const createSlider = () => {
     document.querySelector('.main').style.display = 'block';
     // hide image aria
     imagesArea.style.display = 'none';
-    let duration = document.getElementById('doration').value || 1000;
-    // const duration = document.getElementById('doration').value;
-    // if (duration > 0)
+    let duration = document.getElementById('duration').value || 1000;
 
     sliders.forEach(slide => {
         let item = document.createElement('div')
@@ -90,7 +87,7 @@ const createSlider = () => {
             changeSlide(slideIndex);
         }, duration);
     } else {
-        alert('duration cannt be minus value. we give you default value.')
+        alert('duration can not be minus value. we give you a default value.')
 
         timer = setInterval(function() {
             slideIndex++;
@@ -128,17 +125,16 @@ const changeSlide = (index) => {
 
 searchBtn.addEventListener('click', function() {
 
-    // spiner
-
-
-    const spinerContainer = document.querySelector('#spiner')
-    spinerContainer.classList.toggle('d-block')
-
+    document.getElementById('duration').value = ''
 
     document.querySelector('.main').style.display = 'none';
     clearInterval(timer);
     getImages(search.value)
     sliders.length = 0;
+
+    // show spiner
+    showSpiner(true)
+
 })
 
 sliderBtn.addEventListener('click', function() {
@@ -159,9 +155,23 @@ search.addEventListener('keypress', (e) => {
 const erorMessage = (eror) => {
     const container = document.querySelector('.container')
     const erroDiv = document.createElement('div')
-    const errorMsg = `<h2 class='text-danger'>Something went wrong, please try again later.</h2>`
+    const errorMsg = `<h2 class='text-danger text-center mt-5'>Something went wrong, please try again later.</h2>`
     erroDiv.innerHTML = errorMsg
 
     container.appendChild(erroDiv)
+    showSpiner(false)
+
+}
+
+// show spiner
+const showSpiner = (className) => {
+    const spinerContainer = document.querySelector('#spiner')
+        // spinerContainer.classList.remove('d-block')
+    spinerContainer.classList.remove('d-block')
+    if (className == true) {
+        spinerContainer.classList.add('d-block')
+    } else if (className = false) {
+        spinerContainer.classList.remove('d-block')
+    }
 
 }
