@@ -17,23 +17,16 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
-    console.log(images)
     const img = images.hits
-    console.log(img)
-
     imagesArea.style.display = 'block';
     gallery.innerHTML = '';
     // show gallery title
     galleryHeader.style.display = 'flex';
 
-
     if (img == 0) {
         const result = `<h2 class="text-center mt-5 text-danger">Your Result Not Found</h2>`
         notFound.innerHTML = result
-    }
-
-    //
-    else {
+    } else {
         img.forEach(image => {
             let div = document.createElement('div');
             div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
@@ -43,19 +36,14 @@ const showImages = (images) => {
         notFound.innerHTML = ''
     }
 
-
-
-
     // show spiner
     showSpiner(false)
-
 }
 
 const getImages = (query) => {
     fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
         .then(response => response.json())
         .then(data => showImages(data))
-        // .then(data => showImages(data.hits))
         .catch(err => erorMessage(err))
 }
 
@@ -113,7 +101,6 @@ const createSlider = () => {
             changeSlide(slideIndex);
         }, 1200)
     }
-
 }
 
 // change slider index 
@@ -167,7 +154,6 @@ search.addEventListener('keypress', (e) => {
         searchBtn.click()
     }
 })
-
 
 
 // show eror message
