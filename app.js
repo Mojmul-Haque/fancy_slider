@@ -5,7 +5,8 @@ const search = document.getElementById('search');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
-// selected image 
+const notFound = document.getElementById('not-found')
+    // selected image 
 let sliders = [];
 
 
@@ -16,17 +17,34 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // show images 
 const showImages = (images) => {
+    console.log(images)
+    const img = images.hits
+    console.log(img)
 
     imagesArea.style.display = 'block';
     gallery.innerHTML = '';
     // show gallery title
     galleryHeader.style.display = 'flex';
-    images.forEach(image => {
-        let div = document.createElement('div');
-        div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
-        div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-        gallery.appendChild(div)
-    })
+
+
+    if (img == 0) {
+        const result = `<h2 class="text-center mt-5 text-danger">Your Result Not Found</h2>`
+        notFound.innerHTML = result
+    }
+
+    //
+    else {
+        img.forEach(image => {
+            let div = document.createElement('div');
+            div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
+            div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
+            gallery.appendChild(div)
+        })
+        notFound.innerHTML = ''
+    }
+
+
+
 
     // show spiner
     showSpiner(false)
@@ -34,9 +52,10 @@ const showImages = (images) => {
 }
 
 const getImages = (query) => {
-    fetch(`https://apixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
+    fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
         .then(response => response.json())
-        .then(data => showImages(data.hits))
+        .then(data => showImages(data))
+        // .then(data => showImages(data.hits))
         .catch(err => erorMessage(err))
 }
 
@@ -87,7 +106,7 @@ const createSlider = () => {
             changeSlide(slideIndex);
         }, duration);
     } else {
-        alert('duration can not be minus value. we give you a default value.')
+        alert('duration can not be minus value. we give you a default value.(1.2s)')
 
         timer = setInterval(function() {
             slideIndex++;
@@ -153,24 +172,26 @@ search.addEventListener('keypress', (e) => {
 
 // show eror message
 const erorMessage = (eror) => {
-    const container = document.querySelector('.container')
-    const erroDiv = document.createElement('div')
-    const errorMsg = `<h2 class='text-danger text-center mt-5'>Something went wrong, please try again later.</h2>`
-    erroDiv.innerHTML = errorMsg
-
-    container.appendChild(erroDiv)
+    let errorMsgCode = ''
+    const erorMsgContaienr = document.querySelector('#eror_msg')
+    errorMsgCode = `<h2 class='text-danger text-center mt-5'>Something went wrong, please try again later.</h2>`
+    erorMsgContaienr.innerHTML = errorMsgCode
     showSpiner(false)
-
 }
 
 // show spiner
-const showSpiner = (className) => {
+const showSpiner = (isAddClass) => {
     const spinerContainer = document.querySelector('#spiner')
-        // spinerContainer.classList.remove('d-block')
-    spinerContainer.classList.remove('d-block')
-    if (className == true) {
+    const spinerCode = `  <div class="d-flex">
+                            <div class="spinner-border text-success" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                         </div>`
+    spinerContainer.innerHTML = spinerCode;
+
+    if (isAddClass == true) {
         spinerContainer.classList.add('d-block')
-    } else if (className = false) {
+    } else if (isAddClass == false) {
         spinerContainer.classList.remove('d-block')
     }
 
