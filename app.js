@@ -56,9 +56,13 @@ const selectItem = (event, img) => {
     console.log(item)
     if (item === -1) {
         sliders.push(img);
-    } else if (item > -1) {
+    } else if (item !== -1) {
         sliders.splice(item, 1)
     }
+
+    // else if (item > -1) {
+    //     sliders.splice(item, 1)
+    // }
 
 }
 var timer
