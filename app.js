@@ -53,9 +53,13 @@ const selectItem = (event, img) => {
     element.classList.toggle('added');
 
     let item = sliders.indexOf(img);
+    console.log(item)
     if (item === -1) {
         sliders.push(img);
+    } else if (item > -1) {
+        sliders.splice(item, 1)
     }
+
 }
 var timer
 const createSlider = () => {
@@ -80,6 +84,7 @@ const createSlider = () => {
     let duration = document.getElementById('duration').value || 1000;
 
     sliders.forEach(slide => {
+        console.log(slide)
         let item = document.createElement('div')
         item.className = "slider-item";
         item.innerHTML = `<img class="w-100"
@@ -111,8 +116,10 @@ const changeItem = index => {
 // change slide item
 const changeSlide = (index) => {
 
+
     const items = document.querySelectorAll('.slider-item');
     if (index < 0) {
+        console.log(index)
         slideIndex = items.length - 1
         index = slideIndex;
     };
